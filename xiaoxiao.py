@@ -22,11 +22,11 @@ def get_today(today):
     return "{}-{}-{}".format(date[:4], date[4:6], date[6:]), week
 
 content = (
-    "宝贝脑婆～:\n\n\t"
-    "今天是 {_date}，{_week}。\n\t"
-    "首先，今天已经是我们相恋的第 {_loving_days} 天了喔。下面我要播送天气预报啦！！\n\n\t"
-    "你那里明天最{_g_weather_high}，最{_g_weather_low}，天气 {_g_weather_type}，"
-    "注意{_g_weather_notice}\n\n\t哦！"
+    "宝贝脑婆～:<br>"
+    "今天是 {_date}，{_week}，我们已经相恋<font color='#9068be'>{_loving_days}</font>天啦！<br>"
+    "<b>下面我要播送天气预报啦！！</b><br>"
+    "你那里明天<font color='#E62739'>最{_g_weather_high}</font>，<font color='5E7CE2'>最{_g_weather_low}</font>，天气<font color='#381F21'>{_g_weather_type}</font>，<br>"
+    "注意{_g_weather_notice}哦！"
 ) # 邮件内容
 
 def get_weather_info():
@@ -53,16 +53,15 @@ def get_weather_info():
             _g_weather_notice=girl_weather["notice"]
         )
 
-
 title = '脑公的日常问候～'
 mail_host = "smtp.126.com"
 mail_user = "czxjnu@126.com"
 mail_pass = "zssjmm126"
 sender = 'czxjnu@126.com'
-receivers = ['czxjnu@163.com']
+receivers = ['lhx2014jnu@126.com', 'czxjnu@163.com']
 
 def sendEmail():
-    message = MIMEText(get_weather_info(), 'plain', 'utf-8')
+    message = MIMEText(get_weather_info(), 'html', 'utf-8')
     message['From'] = "{}".format(sender)
     message['To'] = ",".join(receivers)
     message['Subject'] = title

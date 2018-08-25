@@ -58,7 +58,7 @@ mail_host = "smtp.126.com"
 mail_user = "czxjnu@126.com"
 mail_pass = "zssjmm126"
 sender = 'czxjnu@126.com'
-receivers = ['lhx2014jnu@126.com', 'czxjnu@163.com']
+receivers = ['lhxjnu2014@126.com', 'czxjnu@163.com']
 
 def sendEmail():
     message = MIMEText(get_weather_info(), 'html', 'utf-8')

@@ -1,71 +1,8 @@
-# !/usr/bin/env python
-# coding=utf-8
-
-import os
-import datetime
 import smtplib
-from email.mime.text import MIMEText
-from email.header import Header
-
 import requests
-
-GIRL, BOY = "阜阳", "广州"
-HEADERS = {
-    "X-Requested-With": "XMLHttpRequest",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36"
-    "(KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
-}
-
-MAIL_HOST = os.environ.get("MAIL_HOST")
-MAIL_USER = os.environ.get("MAIL_USER")
-MAIL_PASS = os.environ.get("MAIL_PASS")
-
-# RECEIVER = ["lhxjnu2014@126.com"]
-RECEIVER = ["lhxjnu2014@126.com"]
-SENDER = "czxjnu@163.com"
-
-# 聚合数据天气预报 api
-weather_api = "https://www.sojson.com/open/api/weather/json.shtml?city={}"
-
-# 邮件内容
-CONTENT_FORMAT = (
-    "嗨，宝贝脑婆～ 😘 :\n\n\t"
-    "今天是 {_date}，{_week}。\n\t"
-    "首先，今天已经是我们相恋的第 {_loving_days} 天了喔 💓。然后我就要来播送天气预报了！！\n\n\t"
-    "我这里明天{_g_weather_high}，{_g_weather_low}，天气 {_g_weather_type}；"
-    "你那里明天{_b_weather_high}，{_b_weather_low}，天气 {_b_weather_type}，"
-    "需要注意的是{_b_weather_notice}"
-)
-
-ANGRY_MSG = "😠 这傻逼接口又挂了！"
-
-
-def get_weather_info():
-    """
-    获取天气信息
-    """
-    girl = requests.get(weather_api.format(GIRL, headers=HEADERS)).json()
-    boy = requests.get(weather_api.format(BOY, headers=HEADERS)).json()
-
-    girl_weather = girl["data"]["forecast"][1]
-    boy_weather = boy["data"]["forecast"][1]
-
-    _date, _week = get_today(girl)
-
-    if girl and boy:
-        return CONTENT_FORMAT.format(
-            _week=_week,
-            _date=_date,
-            _loving_days=get_loving_days(),
-            _g_weather_high=girl_weather["high"],
-            _g_weather_low=girl_weather["low"],
-            _g_weather_type=girl_weather["type"],
-            _g_weather_notice=girl_weather["notice"],
-            _b_weather_high=boy_weather["high"],
-            _b_weather_low=boy_weather["low"],
-            _b_weather_type=boy_weather["type"],
-            _b_weather_notice=boy_weather["notice"],
-        )
+import datetime
+from email.header import Header
+from email.mime.text import MIMEText
 
 
 def get_loving_days():
@@ -76,7 +13,6 @@ def get_loving_days():
     anniversary = datetime.datetime(2017, 1, 6)
     return (today - anniversary).days
 
-
 def get_today(today):
     """
     格式化今天日期
@@ -85,31 +21,58 @@ def get_today(today):
     week = today["data"]["forecast"][0]["date"][-3:]
     return "{}-{}-{}".format(date[:4], date[4:6], date[6:]), week
 
+content = (
+    "宝贝脑婆～:\n\n\t"
+    "今天是 {_date}，{_week}。\n\t"
+    "首先，今天已经是我们相恋的第 {_loving_days} 天了喔。下面我要播送天气预报啦！！\n\n\t"
+    "你那里明天最{_g_weather_high}，最{_g_weather_low}，天气 {_g_weather_type}，"
+    "注意{_g_weather_notice}\n\n\t哦！"
+) # 邮件内容
 
-def send_email():
+def get_weather_info():
     """
-    发送邮件
+    获取天气信息
     """
-    try:
-        content = get_weather_info()
-    except Exception:
-        try:
-            content = get_weather_info()
-        except Exception:
-            content = ANGRY_MSG
+    weather_api = "https://www.sojson.com/open/api/weather/json.shtml?city={}"
+    HEADERS = {
+        "X-Requested-With": "XMLHttpRequest",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36"
+        "(KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+    }
+    girl = requests.get(weather_api.format("阜阳", headers = HEADERS)).json()
+    girl_weather = girl['data']['forecast'][1]
+    _date, _week = get_today(girl)
+    if girl:
+        return content.format(
+            _week=_week,
+            _date=_date,
+            _loving_days=get_loving_days(),
+            _g_weather_high=girl_weather["high"],
+            _g_weather_low=girl_weather["low"],
+            _g_weather_type=girl_weather["type"],
+            _g_weather_notice=girl_weather["notice"]
+        )
 
-    message = MIMEText(content, "plain", "utf-8")
-    message["From"] = Header("宝贝脑婆", "utf-8")
-    message["To"] = Header("A handsome soul")
-    message["Subject"] = Header("😘 脑公的日常问候", "utf-8")
+
+title = '脑公的日常问候～'
+mail_host = "smtp.126.com"
+mail_user = "czxjnu@126.com"
+mail_pass = "zssjmm126"
+sender = 'czxjnu@126.com'
+receivers = ['czxjnu@163.com']
+
+def sendEmail():
+    message = MIMEText(get_weather_info(), 'plain', 'utf-8')
+    message['From'] = "{}".format(sender)
+    message['To'] = ",".join(receivers)
+    message['Subject'] = title
     try:
-        smtp_obj = smtplib.SMTP_SSL(MAIL_HOST)
-        smtp_obj.login(MAIL_USER, MAIL_PASS)
-        smtp_obj.sendmail(SENDER, RECEIVER, message.as_string())
-        smtp_obj.quit()
-    except Exception as e:
+        smtpObj = smtplib.SMTP_SSL(mail_host, 465)
+        smtpObj.login(mail_user, mail_pass)
+        smtpObj.sendmail(sender, receivers, message.as_string())
+        print("邮件发送成功！")
+    except smtplib.SMTPException as e:
         print(e)
 
-
-if __name__ == "__main__":
-    send_email()
+if __name__ == '__main__':
+    sendEmail()

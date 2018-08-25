@@ -73,7 +73,7 @@ def get_loving_days():
     获取恋爱天数
     """
     today = datetime.datetime.today()
-    anniversary = datetime.datetime(2015, 7, 2)
+    anniversary = datetime.datetime(2017, 1, 6)
     return (today - anniversary).days
 
 

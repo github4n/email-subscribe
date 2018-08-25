@@ -4,12 +4,12 @@ import datetime
 from email.header import Header
 from email.mime.text import MIMEText
 
-def get_loving_days():
+def get_birth_days():
     """
-    获取恋爱天数
+    获取小姐姐的出生天数
     """
     today = datetime.datetime.today()
-    anniversary = datetime.datetime(2017, 1, 6)
+    anniversary = datetime.datetime(1994, 9, 23)
     return (today - anniversary).days
 
 def get_today(today):
@@ -21,8 +21,8 @@ def get_today(today):
     return "{}-{}-{}".format(date[:4], date[4:6], date[6:]), week
 
 content = (
-    "宝贝脑婆～:<br>"
-    "今天是 {_date}，{_week}，我们已经相恋<font color='#9068be'>{_loving_days}</font>天啦！<br>"
+    "亲爱的小姐姐～:<br>"
+    "今天是 {_date}，{_week}，你已经<font color='#9068be'>{_loving_days}</font>天大啦！<br>"
     "<b>下面我要播送天气预报啦！！</b><br>"
     "你那里明天<font color='#E62739'>最{_g_weather_high}</font>，<font color='5E7CE2'>最{_g_weather_low}</font>，天气<font color='#381F21'>{_g_weather_type}</font>，<br>"
     "注意{_g_weather_notice}哦！"
@@ -38,26 +38,26 @@ def get_weather_info():
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36"
         "(KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
     }
-    girl = requests.get(weather_api.format("阜阳", headers = HEADERS)).json()
+    girl = requests.get(weather_api.format("宁波", headers = HEADERS)).json()
     girl_weather = girl['data']['forecast'][1]
     _date, _week = get_today(girl)
     if girl:
         return content.format(
             _week=_week,
             _date=_date,
-            _loving_days=get_loving_days(),
+            _loving_days=get_birth_days(),
             _g_weather_high=girl_weather["high"],
             _g_weather_low=girl_weather["low"],
             _g_weather_type=girl_weather["type"],
             _g_weather_notice=girl_weather["notice"]
         )
 
-title = '脑公的日常问候～'
+title = '弟弟的日常问候～'
 mail_host = "smtp.126.com"
 mail_user = "czxjnu@126.com"
 mail_pass = "zssjmm126"
 sender = 'czxjnu@126.com'
-receivers = ['lhxjnu2014@126.com', 'czxjnu@163.com']
+receivers = ['2433478255@qq.com', 'czxjnu@163.com']
 
 def sendEmail():
     message = MIMEText(get_weather_info(), 'html', 'utf-8')

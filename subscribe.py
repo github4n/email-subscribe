@@ -9,7 +9,7 @@ from email.header import Header
 
 import requests
 
-GIRL, BOY = "广州", "阜阳"
+GIRL, BOY = "阜阳", "广州"
 HEADERS = {
     "X-Requested-With": "XMLHttpRequest",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36"

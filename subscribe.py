@@ -21,7 +21,7 @@ MAIL_USER = os.environ.get("MAIL_USER")
 MAIL_PASS = os.environ.get("MAIL_PASS")
 
 # RECEIVER = ["lhxjnu2014@126.com"]
-RECEIVER = ["lhxjnu2014@126.com", "957028646@qq.com"]
+RECEIVER = ["lhxjnu2014@126.com"]
 SENDER = "czxjnu@163.com"
 
 # 聚合数据天气预报 api

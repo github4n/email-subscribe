@@ -104,7 +104,7 @@ def new_post():
         "<td class='content-block' style='font-family: STSong; box-sizing: border-box;", 
         "font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;' valign='top'>")
 	for i in range(0, 10):
-		post = post + ("<font color = '#348eda'><b>", json[i]['date'][0:10], ": ", "</b></font><a href=", json[i]['permalink'], ">", json[i]['title'], "</a><br>")
+		post = post + ("<font color = '#348eda'><b>", json[i]['date'][0:10], ": ", "</b></font><a href='", json[i]['permalink'], "'>", json[i]['title'], "</a><br>")
 	return ''.join(post)
 
 subscribe = (

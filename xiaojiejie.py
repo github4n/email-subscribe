@@ -53,10 +53,10 @@ def get_weather_info():
         )
 
 title = '弟弟的日常问候～'
-mail_host = "smtp.126.com"
-mail_user = "czxjnu@126.com"
-mail_pass = "zssjmm126"
-sender = 'czxjnu@126.com'
+mail_host = "smtp.sina.com"
+mail_user = "czxjnu@sina.com"
+mail_pass = "zssjmm126,"
+sender = 'czxjnu@sina.com'
 receivers = ['2433478255@qq.com', 'czxjnu@163.com']
 
 def sendEmail():

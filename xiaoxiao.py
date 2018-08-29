@@ -95,17 +95,27 @@ def get_weather_info():
         )
 
 def new_post():
-	url = "http://www.czxa.top/content.json"
-	json = requests.get(url.format(headers = HEADERS)).json()['posts']
-	post = (get_weather_info(), 
+    url = "http://www.czxa.top/content.json"
+    json = requests.get(url.format(headers = HEADERS)).json()['posts']
+    post = (get_weather_info(), 
         "<font color = '#FF9F00'><b>然后我要播报一下我最近网站的更新信息啦，别嫌我烦呦，因为很多文章的封面都是你的照片。",
         "最近网站更新的文章有：</b></font>", 
         "</td></tr><tr style='font-family: STSong; box-sizing: border-box; font-size: 14px; margin: 0;'>",
         "<td class='content-block' style='font-family: STSong; box-sizing: border-box;", 
         "font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;' valign='top'>")
-	for i in range(0, 10):
-		post = post + ("<font color = '#348eda'><b>", json[i]['date'][0:10], ": ", "</b></font><a href='", json[i]['permalink'], "'>", json[i]['title'], "</a><br>")
-	return ''.join(post)
+    for i in range(0, 2):
+        post = post + ("<font color = '#348eda'><b>", json[i]['date'][0:10], ": ", "</b></font><a href='", json[i]['permalink'], "'>", json[i]['title'], "</a><br>")
+    post = post + (
+        "<font color = '#FF9F00'><b>此外，", 
+        "最近笔记本更新的文章有：</b></font>", 
+        "</td></tr><tr style='font-family: STSong; box-sizing: border-box; font-size: 14px; margin: 0;'>",
+        "<td class='content-block' style='font-family: STSong; box-sizing: border-box;", 
+        "font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;' valign='top'>")
+    url2 = "http://www.czxa.top/notes/content.json"
+    json2 = requests.get(url2.format(headers = HEADERS)).json()['posts']
+    for i in range(0, 2):
+        post = post + ("<font color = '#348eda'><b>", json2[i]['date'][0:10], ": ", "</b></font><a href='http://www.czxa.top/notes/", json2[i]['path'], "'>", json2[i]['title'], "</a><br>")
+    return ''.join(post)
 
 subscribe = (
 "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'><html xmlns='http://www.w3.org/1999/xhtml' style='font-family: STSong; box-sizing: border-box; font-size: 14px; margin: 0;'>", 

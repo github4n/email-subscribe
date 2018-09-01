@@ -189,6 +189,7 @@ subscribe = (
 "</tr><tr style='font-family: STSong; box-sizing: border-box; font-size: 14px; margin: 0;'><td class='content-wrap' style='font-family: STSong; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 20px;' valign='top'>", 
 "<table width='100%' cellpadding='0' cellspacing='0' style='font-family: STSong; box-sizing: border-box; font-size: 14px; margin: 0;'><tr style='font-family: STSong; box-sizing: border-box; font-size: 14px; margin: 0;'>", 
 "<td class='content-block' style='font-family: STSong; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;' valign='top'>")
+
 def news():
     url = "http://feed.mix.sina.com.cn/api/roll/get?pageid=153&lid=2509&k=&num=50&page=1"
     json = requests.get(url.format(headers = HEADERS)).json()['result']['data']

@@ -3,5 +3,3 @@
 天气数据的爬取代码来自[chenjiandongx/email-subscribe](https://github.com/chenjiandongx/email-subscribe)，感谢分享。
 - python3 xiaoxiao.py：给我的笑笑每天发天气提醒邮件。
 - python3 xiaojiejie.py：自动给我亲爱的小姐姐发天气提醒邮件。
-- python3 jwen.py：自动给丁文亮同学发天气提醒邮件。
-- python3 beibei.py：自动给贝贝同学发天气提醒邮件。

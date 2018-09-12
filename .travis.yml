@@ -12,6 +12,3 @@ before_install:
 script:
   - python3 xiaoxiao.py
   - python3 xiaojiejie.py
-  - python3 jwen.py
-  - python3 beibei.py
-  - python3 peter.py

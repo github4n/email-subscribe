@@ -10,9 +10,9 @@ HEADERS = {
     "(KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
 }
 
-def get_birth_days():
+def get_loving_days():
     """
-    获取网站建立天数
+    获取恋爱天数
     """
     today = datetime.datetime.today()
     anniversary = datetime.datetime(2017, 1, 6)
@@ -64,7 +64,7 @@ def get_weather_info():
         return content.format(
             _week=_week,
             _date=_date,
-            _loving_days=get_birth_days(),
+            _loving_days=get_loving_days(),
             _g_weather_high=girl_weather["high"],
             _g_weather_low=girl_weather["low"],
             _g_weather_type=girl_weather["type"],
@@ -231,8 +231,8 @@ def news():
         "text-align: center; margin: 0; padding: 0 0 20px;'",
         "align='center' valign='top'><a href='http://www.czxa.top' style='font-family: STSong; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;'>超级爱你的脑公～</a></td>",
         "</tr></table></div></div></td>",
-        "<td style='font-family: STSong;", 
-        "box-sizing: border-box; font-size: 14px; vertical-align: top;", 
+        "<td style='font-family: STSong;",
+        "box-sizing: border-box; font-size: 14px; vertical-align: top;",
         "margin: 0;' valign='top'></td></tr></table></body></html>")
     return ''.join(news)
 

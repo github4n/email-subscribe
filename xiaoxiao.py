@@ -3,6 +3,8 @@ import requests
 import datetime
 from email.header import Header
 from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
+from email.mime.multipart import MIMEMultipart
 
 HEADERS = {
     "X-Requested-With": "XMLHttpRequest",
@@ -260,3 +262,7 @@ def sendEmail():
 
 if __name__ == '__main__':
     sendEmail()
+    import codecs
+    f = codecs.open('myxiaoxiao.html', 'w', 'utf-8')
+    f.write(news())
+    f.close()

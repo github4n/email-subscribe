@@ -103,7 +103,7 @@ def new_post():
         "</td></tr><tr style='font-family: STSong; box-sizing: border-box; font-size: 14px; margin: 0;'>",
         "<td class='content-block' style='font-family: STSong; box-sizing: border-box;", 
         "font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;' valign='top'>")
-	for i in range(0, 6):
+	for i in range(0, 8):
 		post = post + ("<font color = '#348eda'><b>", json[i]['date'][0:10], ": ", "</b></font><a href='", json[i]['permalink'], "'>", json[i]['title'], "</a><br>")
 	post = post + (
 		"<font color = '#FF9F00'><b>此外，", 
@@ -113,7 +113,7 @@ def new_post():
         "font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;' valign='top'>")
 	url2 = "http://www.czxa.top/notes/content.json"
 	json2 = requests.get(url2.format(headers = HEADERS)).json()['posts']
-	for i in range(0, 6):
+	for i in range(0, 8):
 		post = post + ("<font color = '#348eda'><b>", json2[i]['date'][0:10], ": ", "</b></font><a href='http://www.czxa.top/notes/", json2[i]['path'], "'>", json2[i]['title'], "</a><br>")
 	return ''.join(post)
 

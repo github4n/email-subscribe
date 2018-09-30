@@ -6,6 +6,10 @@ from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 
+import asyncio
+from pyppeteer import launch
+from common import *
+
 HEADERS = {
     "X-Requested-With": "XMLHttpRequest",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36"
@@ -30,8 +34,9 @@ def get_today(today):
 
 content = (
 "今天是 {_date}，{_week}，我们已经在一起<strong style='font-family: STSong; box-sizing: border-box; font-size: 14px; margin: 0;'>{_loving_days}</strong>天啦💖！"
-"</td>"
-"</tr><tr style='font-family: STSong; box-sizing: border-box; font-size: 14px; margin: 0;'><td class='content-block' style='font-family: STSong; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;' valign='top'>"
+"</td></tr>"
+"<img style='padding: 0.60em; background: white; width: 345px;' src='cid:xiaoxiaotimer' /><br>"
+"<tr style='font-family: STSong; box-sizing: border-box; font-size: 14px; margin: 0;'><td class='content-block' style='font-family: STSong; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;' valign='top'>"
 "<font color = '#FF9F00'><b>☔️首先我跟你讲一下今日的天气昂：</b></font>"
 "</td>"
 "</tr>"
@@ -191,6 +196,7 @@ subscribe = (
 "</tr><tr style='font-family: STSong; box-sizing: border-box; font-size: 14px; margin: 0;'><td class='content-wrap' style='font-family: STSong; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 20px;' valign='top'>", 
 "<table width='100%' cellpadding='0' cellspacing='0' style='font-family: STSong; box-sizing: border-box; font-size: 14px; margin: 0;'><tr style='font-family: STSong; box-sizing: border-box; font-size: 14px; margin: 0;'>", 
 "<td class='content-block' style='font-family: STSong; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;' valign='top'>")
+
 def news():
     url = "http://feed.mix.sina.com.cn/api/roll/get?pageid=153&lid=2509&k=&num=50&page=1"
     json = requests.get(url.format(headers = HEADERS)).json()['result']['data']
@@ -238,6 +244,22 @@ def news():
         "margin: 0;' valign='top'></td></tr></table></body></html>")
     return ''.join(news)
 
+IMAGE_NAME = "xiaoxiaotimer.png"
+
+async def fetch():
+    browser = await launch(
+        {"args": ["--no-sandbox", "--disable-setuid-sandbox"]}
+    )
+    page = await browser.newPage()
+    await page.goto("http://www.czxa.top/lovetimer/index.html")
+    await page.screenshot(
+        {
+            "path": IMAGE_NAME,
+            "clip": {"x": 0, "y": 90, "height": 340, "width": 750},
+        }
+    )
+    await browser.close()
+
 title = '脑公的每日问候来啦🧜‍♂️'
 mail_host = "smtp.sina.com"
 mail_user = "czxjnu@sina.com"
@@ -246,23 +268,30 @@ sender = 'czxjnu@sina.com'
 receivers = ['lhxjnu2014@126.com', 'czxjnu@163.com']
 # receivers = ['czxjnu@163.com']
 
-def sendEmail():
-    message = MIMEText(news(), 'html', 'utf-8')
-    # print(message)
-    message['From'] = "{}".format(sender)
-    message['To'] = ",".join(receivers)
-    message['Subject'] = title
+def send_email():
+    html_content = news()
+    msg = MIMEMultipart("alternative")
+    msg['From'] = "{}".format(sender)
+    msg['To'] = ",".join(receivers)
+    msg['Subject'] = title
+
+    with open(IMAGE_NAME, "rb") as f:
+        img = MIMEImage(f.read())
+        img.add_header("Content-ID", IMAGE_NAME)
+        msg.attach(img)
+    msg.attach(MIMEText(html_content, "html", 'utf-8'))
+
     try:
-        smtpObj = smtplib.SMTP_SSL(mail_host, 465)
-        smtpObj.login(mail_user, mail_pass)
-        smtpObj.sendmail(sender, receivers, message.as_string())
-        print("邮件发送成功！")
-    except smtplib.SMTPException as e:
+        smtp_obj = smtplib.SMTP_SSL(mail_host, 465)
+        smtp_obj.login(mail_user, mail_pass)
+        smtp_obj.sendmail(sender, receivers, msg.as_string())
+        smtp_obj.quit()
+    except Exception as e:
         print(e)
 
-if __name__ == '__main__':
-    sendEmail()
-    import codecs
-    f = codecs.open('myxiaoxiao.html', 'w', 'utf-8')
-    f.write(news())
-    f.close()
+if __name__ == "__main__":
+    try:
+        asyncio.get_event_loop().run_until_complete(fetch())
+    except Exception:
+        asyncio.get_event_loop().run_until_complete(fetch())
+    send_email()

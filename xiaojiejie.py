@@ -54,8 +54,8 @@ def get_weather_info():
     """
     获取天气信息
     """
-    weather_api = "https://www.sojson.com/open/api/weather/json.shtml?city={}"
-    girl = requests.get(weather_api.format("宁波", headers = HEADERS)).json()
+    weather_api = "http://t.weather.sojson.com/api/weather/city/101210401"
+    girl = requests.get(weather_api.format(headers = HEADERS)).json()
     girl_weather = girl['data']['forecast'][0]
     girl_weather1 = girl['data']['forecast'][1]
     girl_weather2 = girl['data']['forecast'][2]

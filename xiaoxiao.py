@@ -277,7 +277,7 @@ def send_email():
 
     with open(IMAGE_NAME, "rb") as f:
         img = MIMEImage(f.read())
-        img.add_header("Content-ID", IMAGE_NAME)
+        img.add_header("Content-ID", "timer")
         msg.attach(img)
     msg.attach(MIMEText(html_content, "html", 'utf-8'))
 

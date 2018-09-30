@@ -10,6 +10,6 @@ python:
 before_install:
   - pip install -r requirements.txt
 script:
-  - python3 xiaoxiao.py
-  # - python3 xiaojiejie.py
+  - python3 xiaoxiao-w.py
+  - python3 xiaojiejie.py
   # - python3 blogupdate.py

@@ -12,4 +12,3 @@ before_install:
 script:
   - python3 xiaoxiao-w.py
   - python3 xiaojiejie.py
-  # - python3 blogupdate.py
